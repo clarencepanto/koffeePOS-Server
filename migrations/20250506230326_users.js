@@ -3,12 +3,11 @@
  * @returns { Promise<void> }
  */
 export function up(knex) {
-  return knex.schema.createTable("products", (table) => {
+  return knex.schema.createTable("users", (table) => {
     table.increments("id").primary();
-    table.string("name").notNullable();
-    table.integer("price").notNullable();
-    table.string("image_url").notNullable();
-    table.boolean("availability").defaultTo(false);
+    table.string("username").notNullable();
+    table.string("password_hash").notNullable();
+    table.string("role").defaultTo("barista");
     table.timestamp("created_at").defaultTo(knex.fn.now());
   });
 }
@@ -18,5 +17,5 @@ export function up(knex) {
  * @returns { Promise<void> }
  */
 export function down(knex) {
-  return knex.schema.dropTable("products");
+  return knex.schema.dropTable("users");
 }
