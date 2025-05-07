@@ -8,7 +8,7 @@ export function up(knex) {
     table.increments("id").primary();
     table.string("name").notNullable();
     table.integer("stock").notNullable().defaultTo(0);
-    table.integer("unit").notNullable();
+    table.string("unit").notNullable();
     table.timestamp("created_at").defaultTo(knex.fn.now());
   });
 }
