@@ -5,5 +5,11 @@
 export async function seed(knex) {
   // Deletes ALL existing entries
   await knex("sales").del();
-  await knex("sales").insert([{ id: 1, colName: "rowValue1" }]);
+  await knex("sales").insert([
+    { products_id: 1, quantity: 1, unit_price: 2.5, total_price: 2.5 },
+    { products_id: 2, quantity: 2, unit_price: 2, total_price: 4 },
+    { products_id: 3, quantity: 2, unit_price: 3, total_price: 6 },
+    { products_id: 5, quantity: 3, unit_price: 3.5, total_price: 10.5 },
+    { products_id: 1, quantity: 2, unit_price: 2.5, total_price: 5 },
+  ]);
 }
