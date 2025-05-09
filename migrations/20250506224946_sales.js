@@ -6,7 +6,7 @@ export function up(knex) {
   return knex.schema.createTable("sales", (table) => {
     table.increments("id").primary();
     table
-      .integer("products_id")
+      .integer("product_id")
       .unsigned()
       .notNullable()
       .references("id")

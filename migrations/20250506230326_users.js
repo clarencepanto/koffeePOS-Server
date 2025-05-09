@@ -6,7 +6,7 @@ export function up(knex) {
   return knex.schema.createTable("users", (table) => {
     table.increments("id").primary();
     table.string("username").notNullable();
-    table.string("password_hash").notNullable();
+    table.string("password").notNullable();
     table.string("role").defaultTo("barista");
     table.timestamp("created_at").defaultTo(knex.fn.now());
   });

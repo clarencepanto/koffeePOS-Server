@@ -6,14 +6,14 @@ export function up(knex) {
   return knex.schema.createTable("ingredient_orders", (table) => {
     table.increments("id").primary();
     table
-      .integer("suppliers_id")
+      .integer("supplier_id")
       .unsigned()
       .notNullable()
       .references("id")
       .inTable("suppliers")
       .onDelete("CASCADE");
     table
-      .integer("ingredients_id")
+      .integer("ingredient_id")
       .unsigned()
       .notNullable()
       .references("id")

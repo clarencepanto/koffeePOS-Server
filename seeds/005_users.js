@@ -12,12 +12,12 @@ export async function seed(knex) {
   await knex("users").insert([
     {
       username: "barista",
-      password_hash: await bcrypt.hash("iambarista", saltRounds),
+      password: await bcrypt.hash("iambarista", saltRounds),
       role: "barista",
     },
     {
       username: "manager",
-      password_hash: await bcrypt.hash("iammanager", saltRounds),
+      password: await bcrypt.hash("iammanager", saltRounds),
       role: "manager",
     },
   ]);
