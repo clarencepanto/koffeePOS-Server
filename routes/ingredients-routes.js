@@ -45,4 +45,32 @@ router.post("/", checkpoint, async (req, res) => {
   }
 });
 
+// manual update for ingredients
+router.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { quantity_restock } = req.body;
+
+  try {
+    const ingredient = await knex("ingredients").where({ id }).first();
+
+    // check if ingredient is active
+    if (!ingredient) {
+      return res.status(404).json({ error: "Ingredient not found" });
+    }
+
+    const updateIngredient = ingredient.stock + quantity_restock;
+
+    // update the new ingredient
+    await knex("ingredients").where({ id }).update({ stock: updateIngredient });
+
+    // return updated row
+    const newUpdatedIngredients = await knex("ingredients")
+      .where({ id })
+      .first();
+    res.status(200).json(newUpdatedIngredients);
+  } catch (error) {
+    console.error(`Error updating the ingredient ${error}`);
+  }
+});
+
 export default router;

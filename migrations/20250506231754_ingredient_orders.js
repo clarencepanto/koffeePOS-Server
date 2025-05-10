@@ -19,7 +19,7 @@ export function up(knex) {
       .references("id")
       .inTable("ingredients")
       .onDelete("CASCADE");
-    table.float("quantity").notNullable();
+    table.float("quantity_restock").notNullable();
     table.string("unit").notNullable();
     table.timestamp("ordered_at").defaultTo(knex.fn.now());
     table.timestamp("received_at");

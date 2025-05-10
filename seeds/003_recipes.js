@@ -7,7 +7,7 @@ export async function seed(knex) {
   await knex("recipes").del();
   await knex("recipes").insert([
     // Espresso
-    { product_id: 1, ingredients_id: 3, quantity_needed: 10, unit: "ML" },
+    { product_id: 1, ingredient_id: 3, quantity_needed: 10, unit: "ML" },
 
     // Matcha Latte
     { product_id: 4, ingredient_id: 4, quantity_needed: 3, unit: "GM" },
