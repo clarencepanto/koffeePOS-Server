@@ -13,8 +13,7 @@ export function up(knex) {
       .inTable("products")
       .onDelete("CASCADE");
     table.integer("quantity").unsigned().notNullable().defaultTo(1);
-    table.decimal("unit_price", 10, 2).notNullable();
-    table.decimal("total_price", 10, 2).notNullable();
+    table.decimal("total_price", 10, 2).notNullable().defaultTo(0);
     table.timestamp("created_at").defaultTo(knex.fn.now());
   });
 }

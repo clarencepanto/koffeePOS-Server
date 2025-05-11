@@ -22,7 +22,6 @@ router.post("/", async (req, res) => {
   try {
     // get the recipe, what is needed to make the product
     const recipe = await knex("recipes").where({ product_id });
-    console.log(product_id, quantity);
 
     if (!recipe.length) {
       return res.status(404).json({ error: "Recipe not found for product" });
@@ -49,12 +48,23 @@ router.post("/", async (req, res) => {
     }
 
     // get the total price of the products
-    // const product = await knex("products").where({ id }).first();
-    // const totalPrice = product.price * quantity;
+    const product = await knex("products").where({ id: product_id }).first();
+    const totalPrice = product.price * quantity;
+    console.log(product.price, quantity);
 
-    res.status(200).json({ message: "Product successfully purchased " });
+    await knex("sales").insert({
+      product_id,
+      quantity,
+      total_price: totalPrice,
+      created_at: new Date(),
+    });
+
+    res.status(200).json({
+      message: "Product successfully purchased and ingredients updated ",
+    });
   } catch (error) {
     res.status(500).json({ error: "Failed to process sale" });
+    console.error("Sale error", error);
   }
 });
 
