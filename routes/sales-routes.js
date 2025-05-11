@@ -52,15 +52,17 @@ router.post("/", async (req, res) => {
     const totalPrice = product.price * quantity;
     console.log(product.price, quantity);
 
+    // gets history of sales for summary table
     await knex("sales").insert({
       product_id,
+      product_name: product.name,
       quantity,
       total_price: totalPrice,
       created_at: new Date(),
     });
 
     res.status(200).json({
-      message: "Product successfully purchased and ingredients updated ",
+      message: "Product successfully purchased and ingredients updated",
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to process sale" });
