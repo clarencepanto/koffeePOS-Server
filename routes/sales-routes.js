@@ -22,6 +22,7 @@ router.post("/", async (req, res) => {
   try {
     // get the recipe, what is needed to make the product
     const recipe = await knex("recipes").where({ product_id });
+    console.log(product_id, quantity);
 
     if (!recipe.length) {
       return res.status(404).json({ error: "Recipe not found for product" });
@@ -35,23 +36,23 @@ router.post("/", async (req, res) => {
       const totalIngredientsNeeded = item.quantity_needed * quantity;
 
       // if not enough quantity
-      if (ingredient.stock < totalNeeded) {
+      if (ingredient.stock < totalIngredientsNeeded) {
         return res
           .status(400)
           .json({ error: `Not enough ${ingredient.name} in stock` });
       }
 
       // deducts ingredients after purchase
-      await knex(
-        "ingredients"
-          .where({ id: ingredient.id })
-          .update({ stock: ingredient.stock - totalIngredientsNeeded })
-      );
+      await knex("ingredients")
+        .where({ id: item.ingredient_id })
+        .update({ stock: ingredient.stock - totalIngredientsNeeded });
     }
 
     // get the total price of the products
-    const product = await knex("products").where({ id }).first();
-    const totalPrice = product.id * quantity;
+    // const product = await knex("products").where({ id }).first();
+    // const totalPrice = product.price * quantity;
+
+    res.status(200).json({ message: "Product successfully purchased " });
   } catch (error) {
     res.status(500).json({ error: "Failed to process sale" });
   }
