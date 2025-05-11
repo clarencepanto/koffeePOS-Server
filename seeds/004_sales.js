@@ -10,6 +10,6 @@ export async function seed(knex) {
     { product_id: 2, quantity: 2, unit_price: 2, total_price: 4 },
     { product_id: 3, quantity: 2, unit_price: 3, total_price: 6 },
     { product_id: 5, quantity: 3, unit_price: 3.5, total_price: 10.5 },
-    { product_id: 1, quantity: 2, unit_price: 2.5, total_price: 5 },
+    { product_id: 4, quantity: 2, unit_price: 2.5, total_price: 5 },
   ]);
 }
