@@ -4,6 +4,7 @@ const knex = initKnex(configuration);
 import express from "express";
 const router = express.Router();
 
+// fetch all restock record data that was purchased
 router.get("/", async (req, res) => {
   try {
     const restockRecord = await knex("restockrecord").select("*");
@@ -16,6 +17,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// creates a new restock record and adds it to the database
 router.post("/", async (req, res) => {
   const { ingredients_id, ingredient_name, ingredient_quantity } = req.body;
   try {

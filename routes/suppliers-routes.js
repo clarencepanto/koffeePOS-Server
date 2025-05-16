@@ -4,7 +4,7 @@ const knex = initKnex(configuration);
 import express from "express";
 const router = express.Router();
 
-// fetch all ingredient order data
+// fetch all suppliers  data
 router.get("/", async (req, res) => {
   try {
     const suppliersData = await knex("suppliers").select("*");

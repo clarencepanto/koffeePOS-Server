@@ -4,6 +4,7 @@ const knex = initKnex(configuration);
 import express from "express";
 const router = express.Router();
 
+// fetch all sales record made
 router.get("/", async (req, res) => {
   try {
     const salesRecord = await knex("salesrecord").select("*");

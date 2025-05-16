@@ -10,6 +10,7 @@ router.post("/", async (req, res) => {
     // get the recipe, what is needed to make the product
     const recipe = await knex("recipes").where({ product_id });
 
+    // checks if the recipe is active in database
     if (!recipe.length) {
       return res.status(404).json({ error: "Recipe not found for product" });
     }
