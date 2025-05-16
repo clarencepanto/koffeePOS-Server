@@ -1,6 +1,5 @@
 // for password security
 import bcrypt from "bcrypt";
-const saltRounds = 10;
 
 /**
  * @param { import("knex").Knex } knex
@@ -9,15 +8,19 @@ const saltRounds = 10;
 export async function seed(knex) {
   // Deletes ALL existing entries
   await knex("users").del();
+
+  const hashedPassword1 = await bcrypt.hash("iambarista", 10);
+  const hashedPassword2 = await bcrypt.hash("iammanager", 10);
+
   await knex("users").insert([
     {
       username: "barista",
-      password: await bcrypt.hash("iambarista", saltRounds),
+      password: hashedPassword1,
       role: "barista",
     },
     {
       username: "manager",
-      password: await bcrypt.hash("iammanager", saltRounds),
+      password: hashedPassword2,
       role: "manager",
     },
   ]);
