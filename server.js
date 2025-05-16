@@ -7,6 +7,8 @@ import recipesRoutes from "./routes/recipes-routes.js";
 import salesRoutes from "./routes/sales-routes.js";
 import suppliersRoutes from "./routes/suppliers-routes.js";
 import userRoutes from "./routes/users-routes.js";
+import salesRecord from "./routes/salesrecord-routes.js";
+import restockRecords from "./routes/restockrecord-routes.js";
 
 const app = express();
 const logRequest = (req, res, next) => {
@@ -26,6 +28,8 @@ app.use("/recipes", recipesRoutes);
 app.use("/sales", salesRoutes);
 app.use("/suppliers", suppliersRoutes);
 app.use("/users", userRoutes);
+app.use("/salesrecord", salesRecord);
+app.use("/restockrecord", restockRecords);
 
 app.listen(PORT, function () {
   console.log(`Listening on port ${PORT}`);

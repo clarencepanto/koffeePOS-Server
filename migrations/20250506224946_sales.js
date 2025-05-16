@@ -4,7 +4,7 @@
  */
 export function up(knex) {
   return knex.schema.createTable("sales", (table) => {
-    table.increments("id").primary();
+    table.increments("id").primary().defaultTo(0);
     table
       .integer("product_id")
       .unsigned()
@@ -12,7 +12,7 @@ export function up(knex) {
       .references("id")
       .inTable("products")
       .onDelete("CASCADE");
-    table.string("product_name");
+    table.string("product_name").defaultTo(null);
     table.integer("quantity").unsigned().notNullable().defaultTo(1);
     table.decimal("total_price", 10, 2).notNullable().defaultTo(0);
     table.timestamp("created_at").defaultTo(knex.fn.now());

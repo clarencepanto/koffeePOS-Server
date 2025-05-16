@@ -4,19 +4,6 @@ const knex = initKnex(configuration);
 import express from "express";
 const router = express.Router();
 
-// fetch all sales order data
-router.get("/", async (req, res) => {
-  try {
-    const salesData = await knex("sales").select("*");
-    res.json(salesData);
-  } catch (error) {
-    res.status(500).json({
-      message: `Unable to retrieve sales data`,
-    });
-    console.error("Error fetching salesData", error);
-  }
-});
-
 router.post("/", async (req, res) => {
   const { product_id, quantity } = req.body;
   try {
@@ -50,13 +37,13 @@ router.post("/", async (req, res) => {
     // get the total price of the products
     const product = await knex("products").where({ id: product_id }).first();
     const totalPrice = product.price * quantity;
-    console.log(product.price, quantity);
 
     // gets history of sales for summary table
-    await knex("sales").insert({
+    await knex("salesrecord").insert({
       product_id,
+      sales_id: id,
       product_name: product.name,
-      quantity,
+      product_quantity: quantity,
       total_price: totalPrice,
       created_at: new Date(),
     });
@@ -67,6 +54,21 @@ router.post("/", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Failed to process sale" });
     console.error("Sale error", error);
+  }
+});
+
+// tracks the record of purchased products
+router.get("/salesrecord", async (req, res) => {
+  try {
+    const salesData = await knex("sales").select("*");
+    res.json(salesData);
+
+    res.status(200).json({ message: "Sale generated successfully" });
+  } catch (error) {
+    res.status(500).json({
+      message: `Unable to retrieve sales data`,
+    });
+    console.error("Error fetching salesData", error);
   }
 });
 
