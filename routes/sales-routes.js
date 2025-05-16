@@ -57,19 +57,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-// tracks the record of purchased products
-router.get("/salesrecord", async (req, res) => {
-  try {
-    const salesData = await knex("sales").select("*");
-    res.json(salesData);
-
-    res.status(200).json({ message: "Sale generated successfully" });
-  } catch (error) {
-    res.status(500).json({
-      message: `Unable to retrieve sales data`,
-    });
-    console.error("Error fetching salesData", error);
-  }
-});
-
 export default router;

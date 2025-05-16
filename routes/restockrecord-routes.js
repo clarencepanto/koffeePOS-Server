@@ -16,4 +16,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  const { ingredients_id, ingredient_name, ingredient_quantity } = req.body;
+  try {
+    const [restockRecordID] = await knex("restockrecord").insert(req.body);
+
+    const newRestockItem = await knex("restockrecord").where({
+      id: restockRecordID,
+    });
+    res.status(200).json(newRestockItem);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to record restock" });
+    console.error("Failed to record restock", error);
+  }
+});
+
 export default router;
