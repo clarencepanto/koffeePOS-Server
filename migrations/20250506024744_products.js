@@ -8,7 +8,7 @@ export function up(knex) {
     table.string("name").notNullable();
     table.decimal("price", 10, 2).notNullable();
     table.string("image_url").notNullable();
-    table.boolean("availability").defaultTo(false);
+    table.integer("quantity").notNullable().defaultTo(1);
     table.timestamp("created_at").defaultTo(knex.fn.now());
   });
 }

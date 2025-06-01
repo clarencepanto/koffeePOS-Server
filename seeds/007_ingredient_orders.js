@@ -11,6 +11,7 @@ export async function seed(knex) {
       supplier_id: 1,
       ingredient_id: 1,
       quantity_restock: 500,
+      price: 200,
       unit: "ML",
     },
     {
@@ -18,6 +19,7 @@ export async function seed(knex) {
       supplier_id: 2,
       ingredient_id: 2,
       quantity_restock: 300,
+      price: 400,
       unit: "GM",
     },
     {
@@ -25,6 +27,7 @@ export async function seed(knex) {
       supplier_id: 1,
       ingredient_id: 3,
       quantity_restock: 200,
+      price: 300,
       unit: "GM",
     },
   ]);

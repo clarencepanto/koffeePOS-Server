@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 const router = express.Router();
 
+// token password
 const JWT_SECRET = "supersecretkey";
 
 // middleware to protect user routes
