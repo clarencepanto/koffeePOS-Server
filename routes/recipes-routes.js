@@ -15,6 +15,7 @@ router.get("/", async (req, res) => {
 
       // stores the products available to make
       const availableUnits = [];
+      console.log(availableUnits);
 
       // Loop through each ingredient in the recipe
       for (const item of recipe) {
@@ -37,13 +38,20 @@ router.get("/", async (req, res) => {
 
     // calculate all products that can be made
     const products = await knex("products");
+
+    // get all available products
+    const results = [];
     for (const product of products) {
       const available = await calculateAvailableProducts(product.id);
-      console.log(`${product.name}: ${available} available stock`);
+      // console.log(`${product.name}: ${available} available stock`);
+      results.push({
+        id: product.id,
+        name: product.name,
+        available,
+      });
     }
 
-    const recipesData = await knex("recipes").select("*");
-    res.json(recipesData);
+    res.json(results);
   } catch (error) {
     res.status(500).json({
       message: `Unable to retrieve recipe data`,
