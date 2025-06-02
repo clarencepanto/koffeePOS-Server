@@ -9,6 +9,8 @@ import suppliersRoutes from "./routes/suppliers-routes.js";
 import userRoutes from "./routes/users-routes.js";
 import salesRecord from "./routes/salesrecord-routes.js";
 import restockRecords from "./routes/restockrecord-routes.js";
+import { Server } from "socket.io";
+import http from "http";
 
 const app = express();
 const logRequest = (req, res, next) => {
@@ -31,6 +33,22 @@ app.use("/users", userRoutes);
 app.use("/salesrecord", salesRecord);
 app.use("/restockrecord", restockRecords);
 
-app.listen(PORT, function () {
+// Create HTTP server from Express app
+const server = http.createServer(app);
+
+// establish connection real time updates in the front end
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("Client connected:", socket.id);
+});
+
+server.listen(PORT, function () {
   console.log(`Listening on port ${PORT}`);
 });
+
+export { io };

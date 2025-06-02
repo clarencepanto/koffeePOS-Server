@@ -2,6 +2,7 @@ import initKnex from "knex";
 import configuration from "../knexfile.js";
 const knex = initKnex(configuration);
 import express from "express";
+import { io } from "../server.js";
 const router = express.Router();
 
 // fetch all product order data
@@ -30,6 +31,10 @@ router.patch("/:id", async (req, res) => {
     }
 
     const product = await knex("products").where({ id }).first();
+
+    // connect to frontend
+    io.emit("productUpdated", product);
+
     res.json(product);
   } catch (error) {
     console.error("PATCH error:", error);
