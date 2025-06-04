@@ -10,7 +10,6 @@ export async function seed(knex) {
       id: 1,
       product_name: "Flat White",
       product_id: 2,
-      sales_id: 1,
     },
   ]);
 }

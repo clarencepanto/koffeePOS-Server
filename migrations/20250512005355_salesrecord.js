@@ -13,14 +13,6 @@ export function up(knex) {
       .inTable("products")
       .onDelete("CASCADE")
       .defaultTo(0);
-    table
-      .integer("sales_id")
-      .unsigned()
-      .notNullable()
-      .references("id")
-      .inTable("sales")
-      .onDelete("CASCADE")
-      .defaultTo(0);
     table.string("product_name").notNullable();
     table.decimal("total_price", 10, 2).notNullable().defaultTo(0);
     table.integer("product_quantity").notNullable().defaultTo(0);

@@ -6,7 +6,7 @@ export async function seed(knex) {
   // Deletes ALL existing entries
   await knex("ingredients").del();
   await knex("ingredients").insert([
-    { id: 1, name: "Milk", stock: 1000, unit: "ML" },
+    { id: 1, name: "Milk", stock: 10000, unit: "ML" },
     { id: 2, name: "Sugar", stock: 500, unit: "GM" },
     { id: 3, name: "Coffee Beans", stock: 600, unit: "GM" },
     { id: 4, name: "Matcha Powder", stock: 150, unit: "GM" },

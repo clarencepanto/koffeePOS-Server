@@ -2,44 +2,51 @@ import initKnex from "knex";
 import configuration from "../knexfile.js";
 const knex = initKnex(configuration);
 import express from "express";
-import { io } from "../server.js";
-const router = express.Router();
 
-// fetch all product order data
-router.get("/", async (req, res) => {
-  try {
-    const productsData = await knex("products").select("*");
-    res.json(productsData);
-  } catch (error) {
-    res.status(500).json({
-      message: `Unable to retrieve product data`,
-    });
-    console.error("Error fetching productsData", error);
-  }
-});
+export default function (io) {
+  const router = express.Router();
 
-// update the quantity
-router.patch("/:id", async (req, res) => {
-  const { id } = req.params;
-  const quantityUpdate = req.body;
-
-  try {
-    const updated = await knex("products").where({ id }).update(quantityUpdate);
-
-    if (updated === 0) {
-      return res.status(404).json({ message: "Product not found" });
+  // fetch all product order data
+  router.get("/", async (req, res) => {
+    try {
+      const productsData = await knex("products").select("*");
+      res.json(productsData);
+    } catch (error) {
+      res.status(500).json({
+        message: `Unable to retrieve product data`,
+      });
+      console.error("Error fetching productsData", error);
     }
+  });
 
-    const product = await knex("products").where({ id }).first();
+  // update the quantity
+  router.patch("/:id", async (req, res) => {
+    const { id } = req.params;
+    const quantityUpdate = req.body;
 
-    // connect to frontend
-    io.emit("productUpdated", product);
+    try {
+      const updated = await knex("products")
+        .where({ id })
+        .update(quantityUpdate);
 
-    res.json(product);
-  } catch (error) {
-    console.error("PATCH error:", error);
-    res.status(500).json({ error: "Failed to update product" });
-  }
-});
+      if (updated === 0) {
+        return res.status(404).json({ message: "Product not found" });
+      }
 
-export default router;
+      const product = await knex("products").where({ id }).first();
+
+      // connect to frontend
+
+      io.emit("productUpdated", product);
+
+      // console.log("productupdated", product);
+
+      res.json(product);
+    } catch (error) {
+      console.error("PATCH error:", error);
+      res.status(500).json({ error: "Failed to update product" });
+    }
+  });
+
+  return router;
+}
