@@ -9,6 +9,7 @@ import userRoutes from "./routes/users-routes.js";
 import salesRecord from "./routes/salesrecord-routes.js";
 import restockRecords from "./routes/restockrecord-routes.js";
 import recipes from "./routes/recipes-routes.js";
+import productavail from "./routes/product_availability-routes.js";
 import { Server } from "socket.io";
 import http from "http";
 
@@ -35,19 +36,12 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", async (socket) => {
-  console.log("✅ Connected with ID:", socket.id);
-
-  socket.on("disconnect", (reason) => {
-    console.log(`Socket disconnected: ${socket.id}, reason: ${reason}`);
-  });
-});
-
 app.use("/ingredient_orders", ingredientOrderRoutes);
 app.use("/ingredients", ingredientsRoutes);
-app.use("/products", productsRoutes(io));
+app.use("/products", productsRoutes);
 app.use("/sales", salesRoutes(io));
 app.use("/recipes", recipes);
+app.use("/productavail", productavail);
 app.use("/suppliers", suppliersRoutes);
 app.use("/users", userRoutes);
 app.use("/salesrecord", salesRecord);

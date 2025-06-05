@@ -94,7 +94,6 @@ export default function (io) {
         // 🔥 Emit updated availability to all connected clients
         const updatedAvailability = await calculateAvailableProducts();
         io.emit("product_availability_update", updatedAvailability);
-        console.log("Emitted after sale:", updatedAvailability);
 
         res.status(200).json({
           message: "Product successfully purchased and ingredients updated",
