@@ -9,7 +9,7 @@ export async function seed(knex) {
     {
       id: 1,
       customer_id: 1,
-      product_name: "Macchiato Blue",
+      product_name: "Macchiato Green",
       product_price: 8,
     },
   ]);

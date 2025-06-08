@@ -43,7 +43,6 @@ export default function (io) {
 
   router.post("/", async (req, res) => {
     const items = req.body;
-    const {} = req.body;
     try {
       for (const { product_id, quantity } of items) {
         // get the recipe, what is needed to make the product
@@ -91,7 +90,7 @@ export default function (io) {
           created_at: new Date(),
         });
 
-        // 🔥 Emit updated availability to all connected clients
+        //  Emit updated availability to all connected clients
         const updatedAvailability = await calculateAvailableProducts();
         io.emit("product_availability_update", updatedAvailability);
 

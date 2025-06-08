@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
 // create new ingredient
 router.post("/", checkpoint, async (req, res) => {
   try {
-    const [id] = await knex("ingredients").insert(req.body);
+    const [id] = await knex("ingredients");
 
     const newIngredient = await knex("ingredients")
       .select(["id", "name", "stock", "unit"])

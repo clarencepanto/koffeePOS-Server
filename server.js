@@ -10,6 +10,8 @@ import salesRecord from "./routes/salesrecord-routes.js";
 import restockRecords from "./routes/restockrecord-routes.js";
 import recipes from "./routes/recipes-routes.js";
 import productavail from "./routes/product_availability-routes.js";
+import loyalcust from "./routes/loyalcust-routes.js";
+import customerProducts from "./routes/customerproducts-routes.js";
 import { Server } from "socket.io";
 import http from "http";
 
@@ -46,6 +48,8 @@ app.use("/suppliers", suppliersRoutes);
 app.use("/users", userRoutes);
 app.use("/salesrecord", salesRecord);
 app.use("/restockrecord", restockRecords);
+app.use("/loyalcust", loyalcust);
+app.use("/customerproducts", customerProducts);
 
 server.listen(PORT, function () {
   console.log(`Listening on port ${PORT}`);
