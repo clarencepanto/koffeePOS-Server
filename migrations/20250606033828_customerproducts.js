@@ -13,6 +13,8 @@ export function up(knex) {
       .inTable("loyalcustomer")
       .onDelete("CASCADE");
     table.string("product_name").notNullable();
+    table.integer("product_qty").notNullable().defaultTo(0);
+    table.json("product_ingredients");
     table.integer("product_price").notNullable().defaultTo(0);
     table.timestamp("created_at").defaultTo(knex.fn.now());
   });

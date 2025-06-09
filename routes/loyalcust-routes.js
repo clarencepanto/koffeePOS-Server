@@ -41,4 +41,38 @@ router.post("/", async (req, res) => {
   }
 });
 
+// delete funct
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await knex("loyalcustomer").where({ id }).del();
+    res.status(200).json({ message: "Customer deleted" });
+  } catch (error) {
+    console.error("Error deleting:", error);
+    res.status(500).json({ message: "Unable to delete customer" });
+  }
+});
+
+// patch function
+router.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { customer_name, customer_allergy, customer_phone } = req.body;
+
+  try {
+    await knex("loyalcustomer").where({ id }).update({
+      customer_name,
+      customer_allergy,
+      customer_phone,
+    });
+
+    const updatedCustomer = await knex("loyalcustomer").where({ id }).first();
+
+    res.status(200).json(updatedCustomer);
+  } catch (error) {
+    console.error("Update failed:", error);
+    res.status(500).json({ message: "Unable to update customer" });
+  }
+});
+
 export default router;

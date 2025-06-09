@@ -13,5 +13,19 @@ export async function seed(knex) {
       customer_allergy: "oats",
       customer_phone: 6041112211,
     },
+    {
+      id: 2,
+      customer_name: "Dhruv Mehrotta",
+      visits: 500,
+      customer_allergy: "milk",
+      customer_phone: 6021112212,
+    },
+    {
+      id: 3,
+      customer_name: "Manuel Gatchalian",
+      visits: 300,
+      customer_allergy: "none",
+      customer_phone: 6031112215,
+    },
   ]);
 }
