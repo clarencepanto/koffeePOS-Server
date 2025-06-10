@@ -27,33 +27,38 @@ router.get("/", async (req, res) => {
 // add customer products data
 router.post("/:customer_id", async (req, res) => {
   const { customer_id } = req.params;
-  const { product_name, product_price } = req.body;
+  const { product_name, product_ingredients, product_qty, product_price } =
+    req.body;
 
   try {
-    const [id] = await knex("customerproducts").insert({
-      customer_id,
+    const [newProduct] = await knex("customerproducts").insert({
+      customer_id: customer_id,
       product_name,
-      product_price,
       product_qty,
-      product_ingredients,
+      product_price,
+      product_ingredients: JSON.stringify(product_ingredients || []),
     });
 
-    const newIngredient = await knex("customerproducts")
-      .select(
-        "id",
-        "product_name",
-        "product_price",
-        "customer_id",
-        "product_qty",
-        "product_ingredients"
-      )
-      .where({ id })
-      .first();
-
-    res.status(201).json(newIngredient);
+    res.status(201).json(newProduct);
   } catch (error) {
-    console.error("Error", error);
-    res.status(500).json({ message: "Unable to add Data!" });
+    console.error("Product creation failed:", error);
+    res.status(500).json({ message: "Failed to create product" });
+  }
+});
+
+// GET route to fetch products for one customer
+router.get("/:customerId", async (req, res) => {
+  const { customerId } = req.params;
+
+  try {
+    const products = await knex("customerproducts")
+      .where("customer_id", customerId)
+      .orderBy("created_at", "desc");
+
+    res.json(products);
+  } catch (error) {
+    console.error("Fetch failed:", error);
+    res.status(500).json({ message: "Error fetching products" });
   }
 });
 
@@ -78,7 +83,7 @@ router.get("/:id", async (req, res) => {
 // patch function
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
-  const { product_name, product_ingredients, product_qty, product_price } =
+  const { product_name, product_qty, product_price, product_ingredients } =
     req.body;
 
   try {
@@ -86,19 +91,35 @@ router.patch("/:id", async (req, res) => {
       .where({ id })
       .update({
         product_name,
-        product_ingredients: JSON.stringify(product_ingredients),
         product_qty,
         product_price,
+        product_ingredients: JSON.stringify(product_ingredients || []),
       });
 
-    const updatedCustomerProducts = await knex("customerproducts")
-      .where({ id })
-      .first();
+    const updated = await knex("customerproducts").where({ id }).first();
 
-    res.status(200).json(updatedCustomerProducts);
+    res.status(200).json(updated);
+  } catch (err) {
+    console.error("Update failed:", err);
+    res.status(500).json({ message: "Unable to update product" });
+  }
+});
+
+// product deletion
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await knex("customerproducts").where({ id }).del();
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    res.status(200).json({ message: "Product deleted successfully." });
   } catch (error) {
-    console.error("Update failed:", error);
-    res.status(500).json({ message: "Unable to update customer products" });
+    console.error("Delete failed:", error);
+    res.status(500).json({ message: "Unable to delete product." });
   }
 });
 
