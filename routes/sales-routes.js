@@ -13,7 +13,10 @@ export default function (io) {
     const results = [];
 
     for (const product of products) {
+      // finds the recipe that is made out of that product
       const recipe = await knex("recipes").where({ product_id: product.id });
+
+      // if theres no recipe, continue to the next product
       if (!recipe.length) {
         results.push({ id: product.id, name: product.name, available: 0 });
         continue;
@@ -21,20 +24,28 @@ export default function (io) {
 
       const availableUnits = [];
 
+      // loops the recipe
       for (const item of recipe) {
+        // find the ingredient that is connected to the recipes
         const ingredient = await knex("ingredients")
           .where({ id: item.ingredient_id })
           .first();
+
+          // if theres no ingredient skip 
         if (!ingredient) {
           availableUnits.push(0);
           continue;
         }
 
         const units = Math.floor(ingredient.stock / item.quantity_needed);
+        // updates the availability for each products
         availableUnits.push(units);
       }
 
+      // round down available units so that theres no decimal
       const available = Math.min(...availableUnits);
+
+      // push the final product
       results.push({ id: product.id, name: product.name, available });
     }
 
